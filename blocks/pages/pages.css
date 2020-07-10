@@ -1,0 +1,9 @@
+@import url(../../vendor/normalize.css);
+@import url(../../fonts/inter/inter.css);
+@import url(../page/page.css);
+@import url(../header/header.css);
+@import url(../profile/profile.css);
+@import url(../foto-grid/foto-grid.css);
+@import url(../footer/footer.css);
+@import url(../popup/popup.css);
+@import url(../popup/_open/popup_open.css);
