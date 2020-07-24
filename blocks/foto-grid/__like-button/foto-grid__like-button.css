@@ -15,3 +15,7 @@
 .foto-grid__like-button:focus {
     outline: none;
 }
+
+.foto-grid__like-button:hover {
+    opacity: .4;
+}

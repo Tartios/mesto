@@ -7,15 +7,33 @@
     <title>Mesto Russia</title>
 </head>
 <body class="page">
-    <div class="popup">
+    <div class="popup popup__profile">
         <div class="popup__container">
             <button type="button" class="popup__close-button"></button>
             <h3 class="popup__title">Редактировать профиль</h3>
-            <form class="popup__form">
+            <form action="#" class="popup__form">
                 <input type="text" class="popup__input popup__input_name">
                 <input type="text" class="popup__input popup__input_prof">
-                <button class="popup__save-button" type="submit">Сохранить</button>
+                <button type="submit" class="popup__save-button">Сохранить</button>
             </form>
+        </div>
+    </div>
+    <div class="popup popup__add">
+        <div class="popup__container">
+            <button type="button" class="popup__close-button"></button>
+            <h3 class="popup__title">Новое место</h3>
+            <form action="#" class="popup__form">
+                <input type="text" class="popup__input popup__input_mark" placeholder="Название">
+                <input type="text" class="popup__input popup__input_link" placeholder="Ссылка на картинку">
+                <button type="submit" class="popup__save-button">Создать</button>
+            </form>
+        </div>
+    </div>
+    <div class="popup popup__image">
+        <div class="popup__container popup__container_img">
+            <button type="button" class="popup__close-button"></button>
+            <img src="#" alt="добавленная картинка" class="popup__imgSrc">
+            <h3 class="popup__title popup__title_img-container"></h3>
         </div>
     </div>
     <header class="header">        
@@ -38,53 +56,21 @@
             </button>
         </section>
         <section class="foto-grid">
-            <div class="foto-grid__section">
-                <img src="./images/karachaevo.png" alt="замок на холме" class="foto-grid__image">
-                <div class="foto-grid__card">
-                    <h2 class="foto-grid__title">Карачаевск</h2>
-                    <button type="submit" class="foto-grid__like-button"></button>
-                </div>
-            </div>
-            <div class="foto-grid__section">
-                <img src="./images/elbrus.png" alt="вид на Эльбрусс" class="foto-grid__image">
-                <div class="foto-grid__card">
-                    <h2 class="foto-grid__title">Гора Эльбрусс</h2>
-                    <button type="submit" class="foto-grid__like-button"></button>
-                </div>
-            </div>
-            <div class="foto-grid__section">
-                <img src="./images/dombai.png" alt="лес в горах" class="foto-grid__image">
-                <div class="foto-grid__card">
-                    <h2 class="foto-grid__title">Домбай</h2>
-                    <button type="submit" class="foto-grid__like-button"></button>
-                </div>
-            </div>
-            <div class="foto-grid__section">
-                <img src="./images/elbrus.png" alt="вид на Эльбрусс" class="foto-grid__image">
-                <div class="foto-grid__card">
-                    <h2 class="foto-grid__title">Гора Эльбрусс</h2>
-                    <button type="submit" class="foto-grid__like-button"></button>
-                </div>
-            </div>
-            <div class="foto-grid__section">
-                <img src="./images/dombai.png" alt="лес в горах" class="foto-grid__image">
-                <div class="foto-grid__card">
-                    <h2 class="foto-grid__title">Домбай</h2>
-                    <button type="submit" class="foto-grid__like-button"></button>
-                </div>
-            </div>
-            <div class="foto-grid__section">
-                <img src="./images/karachaevo.png" alt="замок на холме" class="foto-grid__image">
-                <div class="foto-grid__card">
-                    <h2 class="foto-grid__title">Карачаево-Черкесск</h2>
-                    <button type="submit" class="foto-grid__like-button"></button>
-                </div>
-            </div>
         </section>
         <footer class="footer">
             <p class="footer__author">&copy; 2020 Mesto Russia</p>
         </footer>
     </main>
+    <template id="card">
+        <div class="foto-grid__section">
+            <button class="foto-grid__img-button"><img src="#" alt="добавленная картинка" class="foto-grid__image"></button>
+            <button class="foto-grid__delete-button"></button>
+            <div class="foto-grid__card">
+                <h2 class="foto-grid__title"></h2>
+                <button type="submit" class="foto-grid__like-button"></button>
+            </div>
+        </div>
+    </template>
     <script src="./index.js"></script>
 </body>
 </html>

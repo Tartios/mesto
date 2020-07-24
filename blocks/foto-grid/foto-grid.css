@@ -2,6 +2,10 @@
 @import url(./__like-button/foto-grid__like-button.css);
 @import url(./__section/foto-grid__section.css);
 @import url(./__card/foto-grid__card.css);
+@import url(./__delete-button/foto-grid__delete-button.css);
+@import url(./__image/foto-grid__image.css);
+@import url(./__img-button/foto-grid__img-button.css);
+@import url(./__like-button/_true/foto-grid__like-button_true.css);
 
 .foto-grid {
     display: grid;

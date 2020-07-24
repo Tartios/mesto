@@ -27,6 +27,10 @@
     }
 }
 
+.profile__add-button:focus {
+    outline: none;
+}
+
 .profile__add-button:hover {
     opacity: .4;
 }

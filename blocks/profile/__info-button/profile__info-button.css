@@ -18,6 +18,10 @@
     }
 }
 
+.profile__info-button:focus {
+    outline: none;
+}
+
 .profile__info-button:hover {
     opacity: .4;
 }
