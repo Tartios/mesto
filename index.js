@@ -1,16 +1,14 @@
-const open_button = document.querySelector('.profile__info-button');
+const openButton = document.querySelector('.profile__info-button');
 const addButton = document.querySelector('.profile__add-button');
-const imgButton = document.querySelector('.foto-grid__img-button');
 
 
 const gridCards = document.querySelector('.foto-grid');
-const gridSection = document.querySelector('.foto-grid__section');
 
 
 
-const popupProfile = document.querySelector('.popup__profile');
-const popupAdd = document.querySelector('.popup__add');
-const popupImage = document.querySelector('.popup__image');
+const popupProfile = document.querySelector('.popup_type_profile');
+const popupAdd = document.querySelector('.popup_type_add');
+const popupImage = document.querySelector('.popup_type_image');
 
 
 const popupProfileClose = popupProfile.querySelector('.popup__close-button');
@@ -92,10 +90,6 @@ function createCard(item) {
     return card;
 }
 
-//const likeTrue = (event) => {
-//    event.target.classList.toggle('.foto-grid__like-button_true');
-//};
-
 function cardCreator(item) {
     gridCards.prepend(createCard(item));
 }
@@ -104,7 +98,7 @@ function togglePopup(modal) {
     modal.classList.toggle('popup_open');
 }
 
-open_button.addEventListener('click', function() {
+openButton.addEventListener('click', function() {
     togglePopup(popupProfile);
     inputName.value = profileName.textContent;
     inputProf.value = profileProf.textContent;
