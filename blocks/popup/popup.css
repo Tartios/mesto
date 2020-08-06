@@ -8,6 +8,8 @@
 @import url(./__close-button/popup__close-button.css);
 @import url(./__imgSrc/popup__imgSrc.css);
 @import url(./__title/_img-container/popup__title_img-container.css);
+@import url(./__save-button/_block/popup__save-button_block.css);
+@import url(./__input/_invalid/popup__input_invalid.css);
 .popup {
     display: flex;
     background :rgba(0,0,0,.5);
