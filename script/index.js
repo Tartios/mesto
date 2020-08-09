@@ -1,3 +1,5 @@
+import './validate.js';
+const popups = Array.from(document.querySelectorAll('.popup'));
 const openButton = document.querySelector('.profile__info-button');
 const addButton = document.querySelector('.profile__add-button');
 
@@ -5,15 +7,10 @@ const addButton = document.querySelector('.profile__add-button');
 const gridCards = document.querySelector('.foto-grid');
 
 
-
 const popupProfile = document.querySelector('.popup_type_profile');
 const popupAdd = document.querySelector('.popup_type_add');
 const popupImage = document.querySelector('.popup_type_image');
 
-
-const popupProfileClose = popupProfile.querySelector('.popup__close-button');
-const popupAddClose = popupAdd.querySelector('.popup__close-button');
-const popupImageClose = popupImage.querySelector('.popup__close-button');
 
 const profileForm = popupProfile.querySelector('.popup__form');
 const addForm = popupAdd.querySelector('.popup__form');
@@ -83,33 +80,22 @@ function createCard(item) {
     cardImg.addEventListener('click', () => {//слушатель открытия картинки
         imgSrc.src = cardImg.src;
         imagePopupTitle.textContent = cardTitle.textContent;
-        popupOpened(popupImage);
+        openPopup(popupImage);
     });
 
-    cardImg.src = item.link;
+    cardImg.src = item.link;    
+    cardImg.alt = item.name;
     cardTitle.textContent = item.name;
     
     return card;
-}
+};
 
 function cardCreator(item) {
     gridCards.prepend(createCard(item));
-}
-
-function togglePopup(modal) {
-    modal.classList.toggle('popup_open');
-//    if(modalOpened(modal)) {
-//        modal.addEventListener('keydown', (evt) => {
-//           if(evt.keyCode == 27) {
-//                modal.classList.toggle('popup_open');
-//            }
-//        })
-//        modal.removeEventListener('keydown');
-//    }
-}
+};
 
 openButton.addEventListener('click', function() {
-    popupOpened(popupProfile);
+    openPopup(popupProfile);
     inputName.value = profileName.textContent;
     inputProf.value = profileProf.textContent;
 });
@@ -117,58 +103,70 @@ openButton.addEventListener('click', function() {
 addButton.addEventListener('click', function() {
     inputMark.value = null;
     inputLink.value = null;
-    popupOpened(popupAdd);
+    openPopup(popupAdd);
 });
+
+const isPopupOpened = (popup) => {
+    return popup.classList.contains('popup_open');
+};
+
+const thisModalIsOpen = () => {
+    const popups = Array.from(document.querySelectorAll('.popup'));
+    const popupElement = popups.find(function (popup) {
+        return isPopupOpened(popup);
+    });
+    return popupElement;
+};
+
+const handleEscape = (e) => {
+    const popupElement = thisModalIsOpen();
+    if(e.key === 'Escape') {
+        if(popupElement != undefined) {
+            closePopup(popupElement);            
+        }
+    }
+};
 
 popupProfile.addEventListener('click', (e) => {//закрывает модалку профиля щелчком вне окна
     if(e.target.classList.contains('popup') || e.target.classList.contains('popup__close-button')) {
-        popupClosed(popupProfile);
-    };
+        closePopup(popupProfile);
+    }
 });
 
 popupAdd.addEventListener('click', (e) => {//закрывает модалку добавления щелчком вне окна
     if(e.target.classList.contains('popup') || e.target.classList.contains('popup__close-button')) {
-        popupClosed(popupAdd);
-        addSave.classList.add('popup__save-button_block');
-        addSave.disabled=true;
-    };
+        closePopup(popupAdd);
+        blockButton(addSave);
+    }
 });
 
-function popupOpened(modal) {// открыть модалку    
-    escEvLadd(modal);
+function openPopup(modal) {// открыть модалку
+    escEvLAdd();
     modal.classList.add('popup_open');    
 };
 
-function popupClosed(modal) {// закрыть модалку
-    escEvLRemove(modal);
+function closePopup(modal) {// закрыть модалку
+    escEvLRemove(); 
     modal.classList.remove('popup_open');
 };
 
-const escEvLadd = (modal) => {//добавить слушатель esc
-    document.addEventListener('keydown', (e) => {
-            if(e.keyCode === 27) {
-                popupClosed(modal);
-            };
-        });    
+const escEvLAdd = () => {//добавить слушатель esc
+    document.addEventListener('keydown', handleEscape);
 };
 
-const escEvLRemove = (modal) => {//удалить слушатель esc
-    document.removeEventListener('keydown', (e) => {
-        if(e.keyCode === 27) {
-            popupClosed(modal);
-        };
-    });    
+const escEvLRemove = () => {//удалить слушатель esc
+    document.removeEventListener('keydown', handleEscape);    
 };
 
 popupImage.addEventListener('click', (e) => {//закрывает модалку картинки щелчком вне окна
     if(e.target.classList.contains('popup') || e.target.classList.contains('popup__close-button')) {
-        popupClosed(popupImage);
-    };
-});
+        closePopup(popupImage);
+    }
+})
 
 formSave.addEventListener('click', function(event) {//закрытие модалки профиля кнопкой сохранить
     event.preventDefault();
-    popupClosed(popupProfile);
+    closePopup(popupProfile);
     profileName.textContent = inputName.value;
     profileProf.textContent = inputProf.value;
 });
@@ -176,7 +174,8 @@ formSave.addEventListener('click', function(event) {//закрытие мода�
 addSave.addEventListener('click', function(event) {//закрытие модалки добавления карточки кнопкой создать
     event.preventDefault();
     cardCreator({name: inputMark.value, link: inputLink.value});
-    popupClosed(popupAdd);
+    closePopup(popupAdd);
+    blockButton(addSave);
 });
 
 initialCards.forEach((item) => {
