@@ -1,4 +1,4 @@
-const object = {
+const parameters = {
     formSelector: '.popup__form',
     inputSelector: '.popup__input',
     submitButtonSelector: '.popup__save-button',
@@ -23,13 +23,13 @@ const hasInvalidInput = (inputList) => {
         return !inputElement.validity.valid;
     });
 };
-function blockButton(buttonElement) {
-    buttonElement.classList.add(object.inactiveButtonClass);
+function blockButton(buttonElement, inactiveButtonClass) {
+    buttonElement.classList.add(inactiveButtonClass);
     buttonElement.disabled=true;
 };
-const toggleButtonState = (inputList, buttonElement, inactiveButtonClass) => {
+const toggleButtonState = (inputList, buttonElement, {inactiveButtonClass}) => {
     if(hasInvalidInput(inputList)) {
-        blockButton(buttonElement);
+        blockButton(buttonElement, inactiveButtonClass);
     } else {
         buttonElement.classList.remove(inactiveButtonClass);
         buttonElement.disabled=false;
@@ -42,24 +42,23 @@ const isValid = (formElement, inputElement) => {
         hideInputError(formElement, inputElement);
     }
 };
-const setEventListeners = (formElement, inputSelector, submitButtonSelector, inactiveButtonClass) => {
+const setEventListeners = (formElement, {inputSelector, submitButtonSelector, ...rest}) => {
     const inputList = Array.from(formElement.querySelectorAll(inputSelector));
     const buttonElement = formElement.querySelector(submitButtonSelector);
     inputList.forEach((inputElement) => {
         inputElement.addEventListener('input', () => {
             isValid(formElement, inputElement);
-            toggleButtonState(inputList, buttonElement, inactiveButtonClass);
+            toggleButtonState(inputList, buttonElement, rest);
         });
     });
 };
-const enableValidation = ({formSelector, inputSelector, submitButtonSelector,
-    inactiveButtonClass}) => {
-    const popupForms = Array.from(document.querySelectorAll(formSelector));
-    popupForms.forEach((formElement) => {
-        formElement.addEventListener('submit', (evt) => {
-            evt.preventDefault();
-        });
-        setEventListeners(formElement, inputSelector, submitButtonSelector, inactiveButtonClass);
-    });
+const enableValidation = ({formSelector, ...rest}) => { 
+    const popupForms = Array.from(document.querySelectorAll(formSelector)); 
+    popupForms.forEach((formElement) => { 
+        formElement.addEventListener('submit', (evt) => { 
+            evt.preventDefault(); 
+        }); 
+        setEventListeners(formElement, rest); 
+    }); 
 }
-enableValidation(object);
+enableValidation(parameters);

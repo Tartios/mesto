@@ -122,6 +122,7 @@ const handleEscape = (e) => {
     const popupElement = thisModalIsOpen();
     if(e.key === 'Escape') {
         if(popupElement != undefined) {
+            console.log('eee')
             closePopup(popupElement);            
         }
     }
@@ -140,7 +141,8 @@ popupAdd.addEventListener('click', (e) => {//закрывает модалку �
     }
 });
 
-function openPopup(modal) {// открыть модалку
+function openPopup(modal) {// открыть модалку    
+    blockButton(addSave);
     escEvLAdd();
     modal.classList.add('popup_open');    
 };
