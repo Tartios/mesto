@@ -1,5 +1,3 @@
-import './validate.js';
-const popups = Array.from(document.querySelectorAll('.popup'));
 const openButton = document.querySelector('.profile__info-button');
 const addButton = document.querySelector('.profile__add-button');
 
@@ -103,6 +101,7 @@ openButton.addEventListener('click', function() {
 addButton.addEventListener('click', function() {
     inputMark.value = null;
     inputLink.value = null;
+    blockButton(addSave, parameters.inactiveButtonClass);
     openPopup(popupAdd);
 });
 
@@ -137,18 +136,16 @@ popupProfile.addEventListener('click', (e) => {//закрывает модалк
 popupAdd.addEventListener('click', (e) => {//закрывает модалку добавления щелчком вне окна
     if(e.target.classList.contains('popup') || e.target.classList.contains('popup__close-button')) {
         closePopup(popupAdd);
-        blockButton(addSave);
     }
 });
 
-function openPopup(modal) {// открыть модалку    
-    blockButton(addSave);
+function openPopup(modal) {// открыть модалку
     escEvLAdd();
     modal.classList.add('popup_open');    
 };
 
 function closePopup(modal) {// закрыть модалку
-    escEvLRemove(); 
+    escEvLRemove();
     modal.classList.remove('popup_open');
 };
 
@@ -177,7 +174,6 @@ addSave.addEventListener('click', function(event) {//закрытие модал
     event.preventDefault();
     cardCreator({name: inputMark.value, link: inputLink.value});
     closePopup(popupAdd);
-    blockButton(addSave);
 });
 
 initialCards.forEach((item) => {
