@@ -1,4 +1,5 @@
 import {parameters} from './parameters.js'
+import {blockButton} from './utils.js'
 
 export class FormValidator {
     constructor(form, parameters) {
@@ -67,9 +68,4 @@ export class FormValidator {
             this._setEventListeners(); 
     }
 
-}
-
-    export function blockButton(buttonElement, inactiveButtonClass) {
-        buttonElement.classList.add(inactiveButtonClass);
-        buttonElement.disabled=true;
-    }
+};

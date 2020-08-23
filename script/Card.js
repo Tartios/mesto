@@ -1,3 +1,7 @@
+import {popupImage, imgSrc, imagePopupTitle} from './parameters.js'
+import {openPopup} from './utils.js'
+
+
 export default class Card {
     constructor(item) {
         this._link = item.link;
@@ -15,12 +19,10 @@ export default class Card {
 
     _handleDeleteCard() {
         this._element.closest('.foto-grid__section').remove();
-        console.log('hey');
     }
 
     _handleLikeCard() {
         this._element.querySelector('.foto-grid__like-button').classList.toggle('foto-grid__like-button_true');
-        console.log('hey');
     }
 
     _handleOpenImg() {
