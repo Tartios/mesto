@@ -11,7 +11,7 @@ export const openButton = document.querySelector('.profile__info-button');
 export const addButton = document.querySelector('.profile__add-button');
 
   
-export const gridCards = document.querySelector('.foto-grid');
+export const gridCards = '.foto-grid';
   
   
 export const popups = Array.from(document.querySelectorAll('.popup'));

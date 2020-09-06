@@ -1,4 +1,3 @@
-import {parameters} from './parameters.js'
 import {blockButton} from './utils.js'
 
 export class FormValidator {

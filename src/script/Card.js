@@ -1,11 +1,8 @@
-import {popupImage, imgSrc, imagePopupTitle} from './parameters.js'
-import {openPopup} from './utils.js'
-
-
 export default class Card {
-    constructor(item) {
+    constructor(item, handleCardClick) {
         this._link = item.link;
         this._name = item.name;
+        this._handleCardClick = handleCardClick;
     }
     _getCard() {
         const cardTemplate = document
@@ -25,19 +22,12 @@ export default class Card {
         this._element.querySelector('.foto-grid__like-button').classList.toggle('foto-grid__like-button_true');
     }
 
-    _handleOpenImg() {
-        imgSrc.src = this._link;
-        imgSrc.alt = this._name;
-        imagePopupTitle.textContent = this._name;
-        openPopup(popupImage);
-    }
-
     _addEventListeners() {
         this._element.querySelector('.foto-grid__delete-button').addEventListener('click', () => {
             this._handleDeleteCard();
         });
         this._element.querySelector('.foto-grid__image').addEventListener('click', () => {
-            this._handleOpenImg();
+            this._handleCardClick(this.name, this.link);
         });
         this._element.querySelector('.foto-grid__like-button').addEventListener('click', () => {
             this._handleLikeCard();
