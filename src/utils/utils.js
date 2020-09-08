@@ -51,7 +51,7 @@ export const cardCreator = (element) => {
   gridCards.prepend(element);
 };
 
-export function blockButton(buttonElement, inactiveButtonClass) {
-  buttonElement.classList.add(inactiveButtonClass);
-  buttonElement.disabled = true;
-}
+// export function blockButton(buttonElement, inactiveButtonClass) {
+//   buttonElement.classList.add(inactiveButtonClass);
+//   buttonElement.disabled = true;
+// }

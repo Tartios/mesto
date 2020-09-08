@@ -1,7 +1,6 @@
 import "./index.css";
-import { FormValidator } from "../../components/FormValidator.js";
-import Card from "../../components/Card.js";
-import { blockButton } from "../../utils/utils.js";
+import { FormValidator } from "../components/FormValidator.js";
+import Card from "../components/Card.js";
 import {
   parameters,
   openButton,
@@ -15,11 +14,11 @@ import {
   addSave,
   initialCards,
   gridCards,
-} from "../../utils/parameters.js";
-import { Section } from "../../components/Section.js";
-import { PopupWithForm } from "../../components/PopupWithForm.js";
-import { PopupWithImage } from "../../components/PopupWithImage.js";
-import { UserInfo } from "../../components/UserInfo.js";
+} from "../utils/parameters.js";
+import { Section } from "../components/Section.js";
+import { PopupWithForm } from "../components/PopupWithForm.js";
+import { PopupWithImage } from "../components/PopupWithImage.js";
+import { UserInfo } from "../components/UserInfo.js";
 
 //почти все эти слушатели - задвоение. есть все кроме щелчка вне окна вроде бы
 // popupProfile.addEventListener('click', (e) => {//закрывает модалку профиля щелчком вне окна
@@ -92,7 +91,7 @@ addModal.setEventListeners();
 addButton.addEventListener("click", function () {
   inputMark.value = null;
   inputLink.value = null;
-  blockButton(addSave, parameters.inactiveButtonClass);
+  addFormValidator.blockButton(addSave, parameters.inactiveButtonClass);
   addFormValidator.removeValidate();
   addModal.open();
 });

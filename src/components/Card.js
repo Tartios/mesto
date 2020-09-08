@@ -42,12 +42,13 @@ export default class Card {
       });
   }
 
-  createCard() {
+  createCard() {    
     this._element = this._getCard();
+    const imgElement = this._element.querySelector(".foto-grid__image");
     this._addEventListeners();
 
-    this._element.querySelector(".foto-grid__image").alt = this._name;
-    this._element.querySelector(".foto-grid__image").src = this._link;
+    imgElement.alt = this._name;
+    imgElement.src = this._link;
     this._element.querySelector(".foto-grid__title").textContent = this._name;
 
     return this._element;

@@ -39,7 +39,7 @@ export class FormValidator {
 
   _toggleButtonState(inputList, buttonElement) {
     if (this._hasInvalidInput(inputList)) {
-      blockButton(buttonElement, this._inactiveButtonClass);
+      this.blockButton(buttonElement, this._inactiveButtonClass);
     } else {
       buttonElement.classList.remove(this._inactiveButtonClass);
       buttonElement.disabled = false;
@@ -81,5 +81,10 @@ export class FormValidator {
     popupError.forEach((item) => {
       item.textContent = "";
     });
+  }
+
+  blockButton(buttonElement, inactiveButtonClass) {
+    buttonElement.classList.add(inactiveButtonClass);
+    buttonElement.disabled = true;
   }
 }
