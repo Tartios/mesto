@@ -1,9 +1,12 @@
 export default class Card {
-  constructor(item, templateID, handleCardClick) {
+  constructor(item, templateId, handleCardClick, handleCardDelete) {
+    console.log(item)
     this._link = item.link;
     this._name = item.name;
-    this._template = templateID;
+    this._id = item._id;
+    this._template = templateId;
     this._handleCardClick = handleCardClick;
+    this._deleteCard = handleCardDelete;
   }
   _getCard() {
     const cardTemplate = document
@@ -28,7 +31,8 @@ export default class Card {
     this._element
       .querySelector(".foto-grid__delete-button")
       .addEventListener("click", () => {
-        this._handleDeleteCard();
+        console.log(this._id)
+        this._deleteCard(this._id);
       });
     this._element
       .querySelector(".foto-grid__image")

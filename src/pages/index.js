@@ -19,6 +19,8 @@ import { Section } from "../components/Section.js";
 import { PopupWithForm } from "../components/PopupWithForm.js";
 import { PopupWithImage } from "../components/PopupWithImage.js";
 import { UserInfo } from "../components/UserInfo.js";
+import { Api } from "../components/Api.js";
+import { PopupWithDelete } from "../components/PopupWithDelete";
 
 //почти все эти слушатели - задвоение. есть все кроме щелчка вне окна вроде бы
 // popupProfile.addEventListener('click', (e) => {//закрывает модалку профиля щелчком вне окна
@@ -54,6 +56,83 @@ import { UserInfo } from "../components/UserInfo.js";
 //     closePopup(popupAdd);
 // });
 
+const api = new Api({
+  url: 'https://mesto.nomoreparties.co/v1/cohort-15',
+  id: "b7f21f02-0f3c-4a3e-ae62-e9761e3102fc"
+});
+
+const cardGenerator = api.getInitialCards();
+api.getUserInfo();
+cardGenerator.then((res) => {
+  const cards = new Section(
+    {
+      items: res,//вот тут нужно заменить исходник, хотя наверно не нужно
+      renderer: (items) => {
+        const element = new Card(items, "#card", () => {
+          console.log(items.name, items.link)
+          imgPopup.open(items.name, items.link);
+        }, () => {
+          deleteForm.handleDeleteClick(() => {
+            api.deleteCard(item.id)
+            .then(() => {
+              this._element.closest(".foto-grid__section").remove();
+          })
+          })
+        });
+        const cardElement = element.createCard();
+        cardList.addItem(cardElement);
+      },
+    },
+    gridCards
+  );
+
+  cards.renderItems();
+})
+
+// function getInitialCards() {
+//   fetch('https://mesto.nomoreparties.co/v1/cohort-15/cards', {
+//       headers: {
+//           authorization: "b7f21f02-0f3c-4a3e-ae62-e9761e3102fc"
+//       },
+      
+//       method: 'GET'
+//   })
+//   .then(res => {
+//       return res.json();
+//   })
+//   .then((result) => {
+//       console.log(result);
+//   })
+// }
+
+// getInitialCards();
+
+// function getUserInfo() {
+//   fetch('https://mesto.nomoreparties.co/v1/cohort-15/users/me', {
+//       headers: {
+//           authorization: 'b7f21f02-0f3c-4a3e-ae62-e9761e3102fc'
+//       },
+      
+//       method: 'GET'
+//   })
+//   .then(res => {
+//       return res.json();
+//   })
+//   .then((result) => {
+//       console.log(result);
+//   })
+// }
+
+// getUserInfo();
+const deleteForm = new PopupWithDelete(".popup_type_card-delete", () => {
+  api.deleteCard(this._id)
+  .then((res) => {
+    this._element.closest(".foto-grid__section").remove();
+  })
+});
+
+deleteForm.setEventListeners();
+
 const imgPopup = new PopupWithImage(".popup_type_image");
 imgPopup.setEventListeners();
 const profilePopup = new UserInfo({
@@ -61,28 +140,39 @@ const profilePopup = new UserInfo({
   infoSelector: ".profile__prof",
 });
 
-function addCard(item) {
+function addCard(item) {//вот эту функцию нужно переписать под добавление новой карточки
   const element = new Card(item, "#card", () => {
-    imgPopup.open(item.name, item.link);
-  });
+    imgPopup.open(item.name, item.link);//вот этого хендела у меня больше нет, надо по другому ресурс вытягивать
+  }, () => {
+  deleteForm.handleDeleteClick(() => {
+    api.deleteCard(item.id)
+    .then(() => {
+      this._element.closest(".foto-grid__section").remove();
+  })
+  })
+});//вот эту функцию к херам собачьим переработать надо, тут нужны отдельные хендлеры на клик, лайк и удаление
   const cardElement = element.createCard();
   cardList.addItem(cardElement);
 }
 
-const cardList = new Section(
+const cardList = new Section(//разобраться на досуге почему cardList и addCard друг от друга зависят
   {
-    items: initialCards,
+    items: {},
     renderer: addCard,
   },
   gridCards
 );
 
-cardList.renderItems();
+// cardList.renderItems();
 
 
 const addModal = new PopupWithForm({
   popupSelector: ".popup_type_add",
-  submitHandle: (item) => {addCard(item)},
+  submitHandle: (item) => api.postNewCard(item)
+  .then((item) => {
+    return item;
+  })
+  .then(addCard(item)),
 });
 
 addModal.setEventListeners();
@@ -98,9 +188,11 @@ addButton.addEventListener("click", function () {
 
 const profileModal = new PopupWithForm({
   popupSelector: ".popup_type_profile",
-  submitHandle: (item) => {
-    profilePopup.setUserInfo(item);
-  },
+  submitHandle: (item) => api.patchUserInfo(item)
+  .then((item) => {
+    return item;
+  })
+  .then((item) => profilePopup.setUserInfo(item))
 });
 
 profileModal.setEventListeners();
@@ -132,3 +224,5 @@ const profileFormValidator = new FormValidator(profileForm, parameters);
 const addFormValidator = new FormValidator(addForm, parameters);
 profileFormValidator.enableValidation();
 addFormValidator.enableValidation();
+
+

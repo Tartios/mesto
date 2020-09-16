@@ -6,6 +6,31 @@
     <title>Mesto Russia</title>
   </head>
   <body class="page">
+    <div class="popup popup_type_avatar">
+      <div class="popup__container">
+        <button type="button" class="popup__close-button"></button>
+        <h3 class="popup__title">Обновить аватар</h3>
+        <form action="#" class="popup__form" novalidate>
+          <input
+            name="link"
+            type="url"
+            id="link-input"
+            class="popup__input popup__input_link"
+            placeholder="Ссылка на картинку"
+            required
+          />
+          <span id="link-input-error" class="popup__input-error"></span>
+          <button type="submit" class="popup__save-button">Сохранить</button>
+        </form>
+      </div>
+    </div>
+    <div class="popup popup_type_card-delete">
+      <div class="popup__container">
+        <button type="button" class="popup__close-button"></button>
+        <h3 class="popup__title">Вы уверены?</h3>
+        <button type="submit" class="popup__save-button">Да</button>
+      </div>
+    </div>
     <div class="popup popup_type_profile">
       <div class="popup__container">
         <button type="button" class="popup__close-button"></button>
@@ -80,7 +105,9 @@
     <header class="header"></header>
     <main>
       <section class="profile">
-        <div class="profile__avatar"></div>
+        <button class="profile__avatar">
+          <div class="profile__avatar_hover"></div>
+        </button>
         <div class="profile__info">
           <div class="profile__info-input">
             <h1 class="profile__name">Жак-Ив Кусто</h1>
