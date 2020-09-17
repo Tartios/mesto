@@ -3,12 +3,12 @@ import { Popup } from "./Popup.js";
 export class PopupWithDelete extends Popup {
     constructor( popupSelector, handleDelete ) {
         super(popupSelector);
-        this._handle = handleDelete;
+        this.handleDeleteClick = handleDelete;
     }
 
-    handleDeleteClick(submitAction) {
-        this._handle = submitAction;
-    }
+    // handleDeleteClick(submitAction) {
+    //     this._handle = submitAction;
+    // }
 
     setEventListeners() {
         super.setEventListeners();

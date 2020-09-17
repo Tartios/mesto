@@ -73,7 +73,7 @@ cardGenerator.then((res) => {
           imgPopup.open(items.name, items.link);
         }, () => {
           deleteForm.handleDeleteClick(() => {
-            api.deleteCard(item.id)
+            api.deleteCard(items.id)
             .then(() => {
               console.log('hello')
               return this._element.closest(".foto-grid__section").remove();
@@ -126,9 +126,9 @@ cardGenerator.then((res) => {
 
 // getUserInfo();
 const deleteForm = new PopupWithDelete(".popup_type_card-delete", () => {
-  api.deleteCard(this._id)
-  .then((res) => {
-    this._element.closest(".foto-grid__section").remove(res);
+  api.deleteCard()
+  .then(() => {
+    this._element.closest(".foto-grid__section").remove();
   })
 });
 
