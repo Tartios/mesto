@@ -1,5 +1,6 @@
 export default class Card {
   constructor(item, templateId, handleCardClick, handleCardDelete) {
+    console.log(item)
     this._link = item.link;
     this._name = item.name;
     this._id = item._id;
@@ -48,7 +49,11 @@ export default class Card {
   createCard() {    
     this._element = this._getCard();
     const imgElement = this._element.querySelector(".foto-grid__image");
-    this._addEventListeners();
+    this._addEventListeners(); 
+    // console.log(this._id, this._userId);   
+    // if(this._id != this._userId) {
+        
+    // };
 
     imgElement.alt = this._name;
     imgElement.src = this._link;

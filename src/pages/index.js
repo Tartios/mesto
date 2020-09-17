@@ -12,8 +12,9 @@ import {
   inputMark,
   inputLink,
   addSave,
-  initialCards,
   gridCards,
+  profileName,
+  profileProf, myID
 } from "../utils/parameters.js";
 import { Section } from "../components/Section.js";
 import { PopupWithForm } from "../components/PopupWithForm.js";
@@ -57,29 +58,36 @@ import { PopupWithDelete } from "../components/PopupWithDelete";
 // });
 
 const api = new Api({
-  url: 'https://mesto.nomoreparties.co/v1/cohort-15',
-  id: "b7f21f02-0f3c-4a3e-ae62-e9761e3102fc"
+  url: "https://mesto.nomoreparties.co/v1/cohort-15",
+  id: myID,
 });
 
 const cardGenerator = api.getInitialCards();
-api.getUserInfo();
+api.getUserInfo().then((res) => {
+  profileName.textContent = res.name;
+  profileProf.textContent = res.about;
+});
 cardGenerator.then((res) => {
   const cards = new Section(
     {
       items: res,
       renderer: (items) => {
-        const element = new Card(items, "#card", () => {
-          console.log(items.name, items.link)
-          imgPopup.open(items.name, items.link);
-        }, () => {
-          deleteForm.handleDeleteClick(() => {
-            api.deleteCard(items.id)
-            .then(() => {
-              console.log('hello')
-              return this._element.closest(".foto-grid__section").remove();
-          })
-          }, deleteForm.open())
-        });
+        const element = new Card(
+          items,
+          "#card",
+          () => {
+            console.log(items.name, items.link);
+            imgPopup.open(items.name, items.link);
+          },
+          () => {
+            deleteForm.handleDeleteClick(() => {
+              api.deleteCard(items.id).then(() => {
+                console.log("hello");
+                element._handleDeleteCard()
+              });
+            }, deleteForm.open());
+          }
+        );
         const cardElement = element.createCard();
         cardList.addItem(cardElement);
       },
@@ -88,14 +96,14 @@ cardGenerator.then((res) => {
   );
 
   cards.renderItems();
-})
+});
 
 // function getInitialCards() {
 //   fetch('https://mesto.nomoreparties.co/v1/cohort-15/cards', {
 //       headers: {
 //           authorization: "b7f21f02-0f3c-4a3e-ae62-e9761e3102fc"
 //       },
-      
+
 //       method: 'GET'
 //   })
 //   .then(res => {
@@ -113,7 +121,7 @@ cardGenerator.then((res) => {
 //       headers: {
 //           authorization: 'b7f21f02-0f3c-4a3e-ae62-e9761e3102fc'
 //       },
-      
+
 //       method: 'GET'
 //   })
 //   .then(res => {
@@ -126,10 +134,9 @@ cardGenerator.then((res) => {
 
 // getUserInfo();
 const deleteForm = new PopupWithDelete(".popup_type_card-delete", () => {
-  api.deleteCard()
-  .then(() => {
-    this._element.closest(".foto-grid__section").remove();
-  })
+  api.deleteCard().then(() => {
+    element._handleDeleteCard()
+  });
 });
 
 deleteForm.setEventListeners();
@@ -142,21 +149,25 @@ const profilePopup = new UserInfo({
 });
 
 function addCard(item) {
-  const element = new Card(item, "#card", () => {
-    imgPopup.open(item.name, item.link);
-  }, () => {
-  deleteForm.handleDeleteClick(() => {
-    api.deleteCard(item.id)
-    .then(() => {
-      return this._element.closest(".foto-grid__section").remove();
-  })
-  }, deleteForm.open())
-});
+  const element = new Card(
+    item,
+    "#card",
+    () => {
+      imgPopup.open(item.name, item.link);
+    },
+    () => {
+      deleteForm.handleDeleteClick(() => {
+        api.deleteCard(item.id).then(() => {
+          element._handleDeleteCard()
+        });
+      }, deleteForm.open());
+    }
+  );
   const cardElement = element.createCard();
   cardList.addItem(cardElement);
 }
 
-const cardList = new Section(//разобраться на досуге почему cardList и addCard друг от друга зависят
+const cardList = new Section( //разобраться на досуге почему cardList и addCard друг от друга зависят
   {
     items: {},
     renderer: addCard,
@@ -166,14 +177,15 @@ const cardList = new Section(//разобраться на досуге поче
 
 // cardList.renderItems();
 
-
 const addModal = new PopupWithForm({
   popupSelector: ".popup_type_add",
-  submitHandle: (item) => api.postNewCard(item)
-  .then((item) => {
-    return item;
-  })
-  .then(addCard(item)),
+  submitHandle: (item) =>
+    api
+      .postNewCard(item)
+      .then((item) => {
+        return item;
+      })
+      .then(addCard(item)),
 });
 
 addModal.setEventListeners();
@@ -189,11 +201,17 @@ addButton.addEventListener("click", function () {
 
 const profileModal = new PopupWithForm({
   popupSelector: ".popup_type_profile",
-  submitHandle: (item) => api.patchUserInfo(item)
-  .then((item) => {
-    return item;
-  })
-  .then((item) => profilePopup.setUserInfo(item))
+  submitHandle: (item) =>
+    api
+      .patchUserInfo(item)
+      .then((item) => {
+        return item;
+      })
+      .then((item) => {
+        profilePopup.setUserInfo(item);
+        profileName.textContent = item.name;
+        profileProf.textContent = item.about;
+      })
 });
 
 profileModal.setEventListeners();
@@ -203,7 +221,7 @@ openButton.addEventListener("click", function () {
   const userInfo = profilePopup.getUserInfo();
   inputName.value = userInfo.name;
   inputProf.value = userInfo.info;
-  profileFormValidator.removeValidate()
+  profileFormValidator.removeValidate();
   profileModal.open();
 });
 
@@ -225,5 +243,3 @@ const profileFormValidator = new FormValidator(profileForm, parameters);
 const addFormValidator = new FormValidator(addForm, parameters);
 profileFormValidator.enableValidation();
 addFormValidator.enableValidation();
-
-

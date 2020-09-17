@@ -17,8 +17,6 @@ export class PopupWithDelete extends Popup {
             console.log('hi')
             this.handleDeleteClick();
             this.close();
-            //это короче попап выскакивающий при нажатии урны
-            //тут нужно придумать как после нажатия будет удаляться карточка, чет пока хз вообще
         })
     }
 }
