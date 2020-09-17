@@ -78,7 +78,7 @@ cardGenerator.then((res) => {
               this._element.closest(".foto-grid__section").remove();
           })
           })
-        });
+        }, deleteForm.open());
         const cardElement = element.createCard();
         cardList.addItem(cardElement);
       },
