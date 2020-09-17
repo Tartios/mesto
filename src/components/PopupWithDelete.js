@@ -1,10 +1,9 @@
 import { Popup } from "./Popup.js";
 
 export class PopupWithDelete extends Popup {
-    constructor( popupSelector, handleDelete, buttonDelete) {
+    constructor( popupSelector, handleDelete ) {
         super(popupSelector);
         this._handle = handleDelete;
-        this._button = buttonDelete;
     }
 
     handleDeleteClick(submitAction) {
@@ -17,6 +16,7 @@ export class PopupWithDelete extends Popup {
             evt.preventDefault();
             console.log('hi')
             this.handleDeleteClick();
+            this.close();
             //это короче попап выскакивающий при нажатии урны
             //тут нужно придумать как после нажатия будет удаляться карточка, чет пока хз вообще
         })

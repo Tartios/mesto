@@ -66,7 +66,7 @@ api.getUserInfo();
 cardGenerator.then((res) => {
   const cards = new Section(
     {
-      items: res,//вот тут нужно заменить исходник, хотя наверно не нужно
+      items: res,
       renderer: (items) => {
         const element = new Card(items, "#card", () => {
           console.log(items.name, items.link)
@@ -75,10 +75,11 @@ cardGenerator.then((res) => {
           deleteForm.handleDeleteClick(() => {
             api.deleteCard(item.id)
             .then(() => {
-              this._element.closest(".foto-grid__section").remove();
+              console.log('hello')
+              return this._element.closest(".foto-grid__section").remove();
           })
-          })
-        }, deleteForm.open());
+          }, deleteForm.open())
+        });
         const cardElement = element.createCard();
         cardList.addItem(cardElement);
       },
@@ -127,7 +128,7 @@ cardGenerator.then((res) => {
 const deleteForm = new PopupWithDelete(".popup_type_card-delete", () => {
   api.deleteCard(this._id)
   .then((res) => {
-    this._element.closest(".foto-grid__section").remove();
+    this._element.closest(".foto-grid__section").remove(res);
   })
 });
 
@@ -140,17 +141,17 @@ const profilePopup = new UserInfo({
   infoSelector: ".profile__prof",
 });
 
-function addCard(item) {//вот эту функцию нужно переписать под добавление новой карточки
+function addCard(item) {
   const element = new Card(item, "#card", () => {
-    imgPopup.open(item.name, item.link);//вот этого хендела у меня больше нет, надо по другому ресурс вытягивать
+    imgPopup.open(item.name, item.link);
   }, () => {
   deleteForm.handleDeleteClick(() => {
     api.deleteCard(item.id)
     .then(() => {
-      this._element.closest(".foto-grid__section").remove();
+      return this._element.closest(".foto-grid__section").remove();
   })
-  })
-});//вот эту функцию к херам собачьим переработать надо, тут нужны отдельные хендлеры на клик, лайк и удаление
+  }, deleteForm.open())
+});
   const cardElement = element.createCard();
   cardList.addItem(cardElement);
 }
