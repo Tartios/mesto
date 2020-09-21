@@ -6,6 +6,10 @@ export class Api {
     this._id = options.id;
   }
 
+  getAppInfo() {
+    return Promise.all([this.getInitialCards(), this.getUserInfo()])
+  }
+  
   getInitialCards() {
     return fetch(`${this._url}/cards`, {
       headers: {

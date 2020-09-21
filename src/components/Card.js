@@ -3,6 +3,7 @@ import { myID } from "../utils/parameters";
 export default class Card {
   constructor(
     item,
+    userId,
     templateId,
     handleCardClick,
     handleCardDelete,
@@ -12,7 +13,7 @@ export default class Card {
     // console.log(item)
     this._link = item.link;
     this._name = item.name;
-    this._id = item._id;
+    this._id = userId;
     this._template = templateId;
     this._handleCardClick = handleCardClick;
     this._deleteCard = handleCardDelete;
@@ -74,7 +75,7 @@ export default class Card {
     this._element
       .querySelector(".foto-grid__delete-button")
       .addEventListener("click", () => {
-        this._deleteCard();
+        this._deleteCard(this._id);
       });
     this._element
       .querySelector(".foto-grid__image")

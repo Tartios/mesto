@@ -30,11 +30,11 @@ const api = new Api({
   url: "https://mesto.nomoreparties.co/v1/cohort-15",
   id: myID,
 });
-
+// api.getAppInfo().then([])
 Promise.all([api.getInitialCards(), api.getUserInfo()])
 .then((res) => {
   const [cardInfo, userData] = res;
-  console.log(cardInfo);
+  console.log(cardInfo, userData);
   const cardGenerator = api.getInitialCards()
   // .then((res) => {
   //   return {item: res,
@@ -64,7 +64,7 @@ cardGenerator.then((res) => {
   const cards = new Section(
     {
       items: res,
-      renderer: (items) => addCard(items),
+      renderer: (items) => addCard(items, userData._id),
     },
     gridCards
   );
@@ -72,9 +72,11 @@ cardGenerator.then((res) => {
   cards.renderItems();
 });
 
-function addCard(item) {
+function addCard(item, id) {
+  console.log(id)
   const element = new Card(
     item,
+    id,
 
     "#card",
 
@@ -82,8 +84,8 @@ function addCard(item) {
       imgPopup.open(item.name, item.link);
     },
 
-    (id) => {//тут пишу функцию handleDeleteClick в которой
-      // апи бахает карточку, а при создании формы просто 
+    () => {//тут пишу функцию handleDeleteClick в которой
+      // апи удаляет карточку, а при создании формы просто 
       //передаю ПУСТУЮ функцию, потому что перезаписываю я 
       //ее тут и именно тут я определяю чем она занимается,
       // потому что конкретно вот эта форма создана конкретно
@@ -91,15 +93,17 @@ function addCard(item) {
       // при нажатии на кнопку нужно убирать карточки, то
       // вот тут я прописываю эту функцию и передаю ее туда
       deleteForm.handleDeleteClick(() => {
+        console.log(id)
         api.deleteCard(id).then(() => {
+          console.log(id)
           element._handleDeleteCard()
         });
       }, 
       deleteForm.open());
     },
 
-    (id) => {
-      api.likeCard()
+    () => {
+      api.likeCard(id)
       .then((res) => {
         element.handleLikeCard();
       })
@@ -112,8 +116,8 @@ function addCard(item) {
       // })
     },
 
-    (id) => {
-      api.deleteLikeCard()
+    () => {
+      api.deleteLikeCard(id)
       .then((res) => {
         element.handleDelLikeCard();
       })
@@ -169,7 +173,7 @@ const addModal = new PopupWithForm({
   submitHandle: (item) => {
     api
       .postNewCard(item)
-      .then((item) => {addCard(item)})}
+      .then((item) => {addCard(item, userData._id)})}
 });
 
 // ----------------- СЛУШАТЕЛИ ФОРМ И КНОПОК -----------------//
