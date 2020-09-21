@@ -16,10 +16,7 @@ export class Api {
     })
       .then((res) => {
         return res.json();
-      })//если вот до сих оставить, по идее продолжит работать
-      .then((result) => {
-        return result;
-      });
+      })
   }
 
   getUserInfo() {
@@ -33,9 +30,6 @@ export class Api {
       .then((res) => {
         return res.json();
       })
-      .then((result) => {
-        return result;
-      });
   }
 
   patchUserInfo(data) {
@@ -58,7 +52,7 @@ export class Api {
       })
   }
 
-  postNewCard(data) {//откуда берется дата? ну это должна быть не дата, а массив с нужными значениями, хотя вот к 1:22 я понял что наверно надо именно дату передать как массив и из нее уже брать нужные значения, чтобы это был полноценный объект для всех вариантов использования
+  postNewCard(data) {
     return fetch(`${this._url}/cards`, {
       headers: {
         authorization: this._id,
@@ -126,17 +120,17 @@ export class Api {
     });
   }
 
-  setNewAvatar() {
-    return fetch("${this._url}/users/me/avatar", {
+  setNewAvatar(data) {
+    return fetch(`${this._url}/users/me/avatar`, {
       headers: {
         authorization: this._id,
-        "Content-Type": "image/jpeg", //работа с апи урок 5 MIME типы данных, возможно можно указать multipart/form-data
+        "Content-Type": "application/json", //работа с апи урок 5 MIME типы данных, возможно можно указать multipart/form-data
       },
 
       method: "PATCH",
 
       body: JSON.stringify({
-        link: "", //ссылка на фото профиля
+        avatar: data.link //ссылка на фото профиля
       }),
     });
   }

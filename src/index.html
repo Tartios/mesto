@@ -105,7 +105,7 @@
     <header class="header"></header>
     <main>
       <section class="profile">
-        <button class="profile__avatar">
+        <button class="profile__avatar"></button><!-- <img src="" alt="аватар" class="profile__avatar"> -->
           <div class="profile__avatar_hover"></div>
         </button>
         <div class="profile__info">
@@ -130,7 +130,10 @@
         <button class="foto-grid__delete-button"></button>
         <div class="foto-grid__card">
           <h2 class="foto-grid__title"></h2>
-          <button type="submit" class="foto-grid__like-button"></button>
+          <div>
+            <button type="submit" class="foto-grid__like-button"></button>
+            <p class="foto-grid__like-counter"></p>
+          </div>
         </div>
       </div>
     </template>
