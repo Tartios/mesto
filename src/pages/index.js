@@ -30,16 +30,11 @@ const api = new Api({
   url: "https://mesto.nomoreparties.co/v1/cohort-15",
   id: myID,
 });
-// api.getAppInfo().then([])
 Promise.all([api.getInitialCards(), api.getUserInfo()])
 .then((res) => {
   const [cardInfo, userData] = res;
   console.log(cardInfo, userData);
   const cardGenerator = api.getInitialCards()
-  // .then((res) => {
-  //   return {item: res,
-  //   id: res.id}
-  // });
 // ----------------- ЗАПРОСЫ К API -----------------//
 
 api.getUserInfo().then((res) => {
@@ -47,6 +42,9 @@ api.getUserInfo().then((res) => {
   profileAvatar.style.backgroundSize = "cover";
   profileName.textContent = res.name;
   profileProf.textContent = res.about;
+})
+.catch((err) => {
+  console.log(err);
 });
 
 
@@ -63,20 +61,21 @@ const cardList = new Section( //разобраться на досуге поч�
 cardGenerator.then((res) => {
   const cards = new Section(
     {
-      items: res,
-      renderer: (items) => addCard(items, userData._id),
+      items: res.reverse(),
+      renderer: (items) => addCard(items),
     },
     gridCards
   );
 
   cards.renderItems();
+})
+.catch((err) => {
+  console.log(err);
 });
 
-function addCard(item, id) {
-  console.log(id)
+function addCard(item) {
   const element = new Card(
     item,
-    id,
 
     "#card",
 
@@ -93,37 +92,37 @@ function addCard(item, id) {
       // при нажатии на кнопку нужно убирать карточки, то
       // вот тут я прописываю эту функцию и передаю ее туда
       deleteForm.handleDeleteClick(() => {
-        console.log(id)
-        api.deleteCard(id).then(() => {
-          console.log(id)
+        api.deleteCard(item._id).then(() => {
           element._handleDeleteCard()
+        })
+        .catch((err) => {
+          console.log(err);
         });
       }, 
       deleteForm.open());
     },
 
     () => {
-      api.likeCard(id)
-      .then((res) => {
+      api.likeCard(item._id)
+      .then(() => {
         element.handleLikeCard();
       })
-      // api.getInitialCards()
-      // .then((res) => {
-      //   return [] = res.likes    
-      // })
-      // .then((res) => {
-      //   console.log(res)
-      // })
+      .catch((err) => {
+        console.log(err);
+      })
     },
 
     () => {
-      api.deleteLikeCard(id)
-      .then((res) => {
+      api.deleteLikeCard(item._id)
+      .then(() => {
         element.handleDelLikeCard();
+      })
+      .catch((err) => {
+        console.log(err);
       })
     }
   );
-  const cardElement = element.createCard();
+  const cardElement = element.createCard(item._id);
   cardList.addItem(cardElement);
 }
 
@@ -151,6 +150,9 @@ const profileModal = new PopupWithForm({
         profileName.textContent = item.name;
         profileProf.textContent = item.about;
       })
+      .catch((err) => {
+        console.log(err);
+      })
 });
 
 const deleteForm = new PopupWithDelete(".popup_type_card-delete");
@@ -165,6 +167,9 @@ const avatarModal = new PopupWithForm({
       profileAvatar.style.background = `url(${item.link})`;
       profileAvatar.style.backgroundSize = "cover";
     })
+    .catch((err) => {
+      console.log(err);
+    })
   }
 });
 
@@ -173,7 +178,10 @@ const addModal = new PopupWithForm({
   submitHandle: (item) => {
     api
       .postNewCard(item)
-      .then((item) => {addCard(item, userData._id)})}
+      .then((item) => {addCard(item)})
+      .catch((err) => {
+        console.log(err);
+      })}
 });
 
 // ----------------- СЛУШАТЕЛИ ФОРМ И КНОПОК -----------------//
@@ -223,6 +231,9 @@ profileFormValidator.enableValidation();
 addFormValidator.enableValidation();
 //avatarFormValidator.enableValidation();
 
+})
+.catch((err) => {
+  console.log(err);
 });
 
 //почти все эти слушатели - задвоение. есть все кроме щелчка вне окна вроде бы

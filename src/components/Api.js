@@ -21,6 +21,9 @@ export class Api {
       .then((res) => {
         return res.json();
       })
+      .catch((err) => {
+        console.log(err);
+      })
   }
 
   getUserInfo() {
@@ -33,6 +36,9 @@ export class Api {
     })
       .then((res) => {
         return res.json();
+      })
+      .catch((err) => {
+        console.log(err);
       })
   }
 
@@ -54,6 +60,9 @@ export class Api {
       .then((res) => {
         return res.json();
       })
+      .catch((err) => {
+        console.log(err);
+      })
   }
 
   postNewCard(data) {
@@ -73,6 +82,9 @@ export class Api {
     .then((res) => {
         return res.json();
     })
+    .catch((err) => {
+      console.log(err);
+    })
   }
 
   deleteCard(cardId) {
@@ -91,8 +103,8 @@ export class Api {
     });
   }
 
-  likeCard() {
-    return fetch(`${this._url}/cards/${cardId}`, {
+  likeCard(cardId) {
+    return fetch(`${this._url}/cards/likes/${cardId}`, {
       headers: {
         authorization: this._id,
         "Content-Type": "application/json",
@@ -100,27 +112,20 @@ export class Api {
 
       method: "PUT",
 
-      body: JSON.stringify({
-        //тут пока хз что делать, думаю нужно передать айди карточки и переключить лайк с фолс на тру
-        name: "",
-        link: "",
-      }),
+      body: JSON.stringify(),
     });
   }
 
-  deleteLikeCard() {
-    return fetch(`${this._url}/cards/${cardId}`, {
+  deleteLikeCard(cardId) {
+    return fetch(`${this._url}/cards/likes/${cardId}`, {
       headers: {
         authorization: this._id,
         "Content-Type": "application/json",
       },
 
-      method: "PUT",
+      method: "DELETE",
 
-      body: JSON.stringify({
-        name: "",
-        link: "",
-      }),
+      body: JSON.stringify(),
     });
   }
 

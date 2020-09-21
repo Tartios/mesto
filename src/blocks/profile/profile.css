@@ -5,7 +5,6 @@
 @import url(./__info/prodile__info.css);
 @import url(./__name/profile__name.css);
 @import url(./__prof/profile__prof.css);
-@import url(./__avatar/_hover/profile__avatar_hover.css);
 
 .profile {
     margin: 0 auto 50px;

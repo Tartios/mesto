@@ -3,7 +3,6 @@ import { myID } from "../utils/parameters";
 export default class Card {
   constructor(
     item,
-    userId,
     templateId,
     handleCardClick,
     handleCardDelete,
@@ -13,13 +12,16 @@ export default class Card {
     // console.log(item)
     this._link = item.link;
     this._name = item.name;
-    this._id = userId;
+    // this._userId = cardId;
+    this._like = item.likes;
     this._template = templateId;
     this._handleCardClick = handleCardClick;
     this._deleteCard = handleCardDelete;
     // this._ownerId = item.owner._id;
     this._handleLikeCards = handleLikeClick;
     this._delLike = delLike;
+    // this._likeButton = this._element.querySelector(".foto-grid__like-button");
+    // this._likeCounter = this._element.querySelector(".foto-grid__like-counter");
   }
   _getCard() {
     const cardTemplate = document
@@ -34,37 +36,43 @@ export default class Card {
     this._element.closest(".foto-grid__section").remove();
   }
 
-  _createLikes() {}
+  _createLikes() {
+    const likeCounter = this._element.querySelector(".foto-grid__like-counter");
+    likeCounter.textContent = this._like.length;
+  }
 
   handleLikeCard() {
-    this._element
-      .querySelector(".foto-grid__like-button")
-      .classList.add("foto-grid__like-button_true");
+    const likeButton = this._element.querySelector(".foto-grid__like-button");
     const likeCounter = this._element.querySelector(".foto-grid__like-counter");
-    likeCounter.textContent = аргумент.likes.length;
+    likeCounter.textContent = this._like.length;
+    likeButton.classList.add("foto-grid__like-button_true");
   }
 
   handleDelLikeCard() {
-    this._element
-      .querySelector(".foto-grid__like-button")
-      .classList.remove("foto-grid__like-button_true");
+    const likeButton = this._element.querySelector(".foto-grid__like-button");
+    likeButton.classList.remove("foto-grid__like-button_true");
     const likeCounter = this._element.querySelector(".foto-grid__like-counter");
-    likeCounter.textContent = аргумент.likes.length;
+    likeCounter.textContent = this._like.length;
   }
 
-  _drawInitialLikes() {
-    if (this._likeData) {
-      likeCounter.textContent = this._likeData.length;
+  _isLiked() {
+    return this._like.some((person) => {
+      return person.id === myID;
+    });
+  }
+
+  _toogleLikes() {
+    const likeCounter = this._element.querySelector(".foto-grid__like-counter");
+    if (this._like) {
+      likeCounter.textContent = this._like.length;
     } else {
       likeCounter.textContent = [].length;
     }
 
     const likeButton = this._element.querySelector(".foto-grid__like-button");
-    const isLiked = this._likeData.some((person) => {
-      return person.id === myID;
-    });
+    this._isLiked();
 
-    if (isLiked) {
+    if (this._isLiked()) {
       likeButton.classList.add("foto-grid__like-button_true");
     } else {
       likeButton.classList.remove("foto-grid__like-button_true");
@@ -75,7 +83,7 @@ export default class Card {
     this._element
       .querySelector(".foto-grid__delete-button")
       .addEventListener("click", () => {
-        this._deleteCard(this._id);
+        this._deleteCard(this._userId);
       });
     this._element
       .querySelector(".foto-grid__image")
@@ -85,7 +93,7 @@ export default class Card {
     this._element
       .querySelector(".foto-grid__like-button")
       .addEventListener("click", () => {
-        this.handleLikeCard();
+        this._toogleLikes()
         this._handleLikeCards();
       });
   }
@@ -94,10 +102,12 @@ export default class Card {
     this._element = this._getCard();
     const imgElement = this._element.querySelector(".foto-grid__image");
     this._addEventListeners();
-    // console.log(this._userId, this._ownerId);
-    // if(this._id != this._userId) {
-
-    // };
+    this._createLikes();
+    // console.log(this._ownerId);
+    if(this._ownerId != this._userId) {
+      this._element
+        .querySelector(".foto-grid__delete-button").remove()
+    };
 
     imgElement.alt = this._name;
     imgElement.src = this._link;
