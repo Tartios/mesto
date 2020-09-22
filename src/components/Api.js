@@ -7,9 +7,9 @@ export class Api {
   }
 
   getAppInfo() {
-    return Promise.all([this.getInitialCards(), this.getUserInfo()])
+    return Promise.all([this.getInitialCards(), this.getUserInfo()]);
   }
-  
+
   getInitialCards() {
     return fetch(`${this._url}/cards`, {
       headers: {
@@ -23,7 +23,7 @@ export class Api {
       })
       .catch((err) => {
         console.log(err);
-      })
+      });
   }
 
   getUserInfo() {
@@ -39,22 +39,21 @@ export class Api {
       })
       .catch((err) => {
         console.log(err);
-      })
+      });
   }
 
   patchUserInfo(data) {
     return fetch(`${this._url}/users/me`, {
       headers: {
         authorization: this._id,
-        "Content-Type": "application/json", //это тип данных, нужен при отправке данных на сервер
+        "Content-Type": "application/json"
       },
 
       method: "PATCH",
 
       body: JSON.stringify({
-        //в бади отправляют сами данные
         name: data.name,
-        about: data.info
+        about: data.info,
       }),
     })
       .then((res) => {
@@ -62,43 +61,42 @@ export class Api {
       })
       .catch((err) => {
         console.log(err);
-      })
+      });
   }
 
   postNewCard(data) {
     return fetch(`${this._url}/cards`, {
       headers: {
         authorization: this._id,
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
 
       method: "POST",
 
       body: JSON.stringify({
         name: data.name,
-        link: data.link
+        link: data.link,
       }),
     })
-    .then((res) => {
+      .then((res) => {
         return res.json();
-    })
-    .catch((err) => {
-      console.log(err);
-    })
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   deleteCard(cardId) {
     return fetch(`${this._url}/cards/${cardId}`, {
-      //вместо кард айди нужно вставить айди с сервера
       headers: {
         authorization: this._id,
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
 
       method: "DELETE",
 
       body: JSON.stringify({
-        id: cardId
+        id: cardId,
       }),
     });
   }
@@ -112,12 +110,12 @@ export class Api {
 
       method: "PUT",
     })
-    .then((res) => {
-      return res.json();
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+      .then((res) => {
+        return res.json();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   deleteLikeCard(cardId) {
@@ -127,27 +125,27 @@ export class Api {
         "Content-Type": "application/json",
       },
 
-      method: "DELETE"
+      method: "DELETE",
     })
-    .then((res) => {
-      return res.json();
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+      .then((res) => {
+        return res.json();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   setNewAvatar(data) {
     return fetch(`${this._url}/users/me/avatar`, {
       headers: {
         authorization: this._id,
-        "Content-Type": "application/json", //работа с апи урок 5 MIME типы данных, возможно можно указать multipart/form-data
+        "Content-Type": "application/json"
       },
 
       method: "PATCH",
 
       body: JSON.stringify({
-        avatar: data.link //ссылка на фото профиля
+        avatar: data.link,
       }),
     });
   }

@@ -1,4 +1,4 @@
-import { popupError } from '../utils/parameters.js';
+import { popupError } from "../utils/parameters.js";
 
 export class FormValidator {
   constructor(form, parameters) {
@@ -72,7 +72,7 @@ export class FormValidator {
     this._formElement.addEventListener("submit", (evt) => {
       evt.preventDefault();
     });
-    this.removeValidate()
+    this.removeValidate();
     this._setEventListeners();
   }
 

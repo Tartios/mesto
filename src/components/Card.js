@@ -10,7 +10,6 @@ export default class Card {
     handleLikeClick,
     _handleDeleteLikeClick
   ) {
-    // console.log(item)
     this._link = item.link;
     this._name = item.name;
     this._userId = userId;
@@ -18,11 +17,9 @@ export default class Card {
     this._template = templateId;
     this._handleCardClick = handleCardClick;
     this._deleteCard = handleCardDelete;
-    // this._ownerId = item.owner._id;
+    this._ownerId = item.owner._id;
     this._handleLikeCards = handleLikeClick;
     this._handleDeleteLikeClick = _handleDeleteLikeClick;
-    // this._likeButton = this._element.querySelector(".foto-grid__like-button");
-    // this._likeCounter = this._element.querySelector(".foto-grid__like-counter");
   }
   _getCard() {
     const cardTemplate = document
@@ -40,24 +37,8 @@ export default class Card {
   _createLikes() {
     const likeCounter = this._element.querySelector(".foto-grid__like-counter");
     likeCounter.textContent = this._likes.length;
-    // const likeButton = this._element.querySelector(".foto-grid__like-button");
-    // likeButton.classList.add("foto-grid__like-button_true");
-    this._toogleLikes()
+    this._toogleLikes();
   }
-
-  // handleLikeCard() {
-  //   const likeButton = this._element.querySelector(".foto-grid__like-button");
-  //   const likeCounter = this._element.querySelector(".foto-grid__like-counter");
-  //   likeCounter.textContent = this._likes.length;
-  //   likeButton.classList.add("foto-grid__like-button_true");
-  // }
-
-  // handleDeleteLikeCard() {
-  //   const likeButton = this._element.querySelector(".foto-grid__like-button");
-  //   likeButton.classList.remove("foto-grid__like-button_true");
-  //   const likeCounter = this._element.querySelector(".foto-grid__like-counter");
-  //   likeCounter.textContent = this._likes.length;
-  // }
 
   _isLiked() {
     return this._likes.some((person) => {
@@ -72,15 +53,7 @@ export default class Card {
   }
 
   _toogleLikes() {
-    // const likeCounter = this._element.querySelector(".foto-grid__like-counter");
-    // if (this._likes) {
-    //   likeCounter.textContent = this._likes.length;
-    // } else {
-    //   likeCounter.textContent = [].length;
-    // }
-
     const likeButton = this._element.querySelector(".foto-grid__like-button");
-    // this._isLiked(arrayLikes);
 
     if (this._isLiked()) {
       likeButton.classList.add("foto-grid__like-button_true");
@@ -103,16 +76,11 @@ export default class Card {
     this._element
       .querySelector(".foto-grid__like-button")
       .addEventListener("click", () => {
-        if(this._isLiked) {
-        this._handleLikeCards();
-      } else {
-        this._handleDeleteLikeClick();
-      }
-        // if (this._isLiked()) {
-        //   likeButton.classList.add("foto-grid__like-button_true");
-        // } else {
-        //   likeButton.classList.remove("foto-grid__like-button_true");
-        // };
+        if (!this._isLiked()) {
+          this._handleLikeCards();
+        } else {
+          this._handleDeleteLikeClick();
+        }
       });
   }
 
@@ -121,11 +89,9 @@ export default class Card {
     const imgElement = this._element.querySelector(".foto-grid__image");
     this._addEventListeners();
     this._createLikes();
-    // console.log(this._ownerId);
-    if(this._ownerId != this._userId) {
-      this._element
-        .querySelector(".foto-grid__delete-button").remove()
-    };
+    if (this._ownerId != this._userId) {
+      this._element.querySelector(".foto-grid__delete-button").remove();
+    }
 
     imgElement.alt = this._name;
     imgElement.src = this._link;

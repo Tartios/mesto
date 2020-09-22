@@ -28,10 +28,18 @@ export class Popup {
     });
   }
 
+  renderLoading(isLoading, text) {
+    if (isLoading) {
+      this._popup.querySelector(".popup__save-button").textContent =
+        "Сохранение...";
+    } else {
+      this._popup.querySelector(".popup__save-button").textContent = text;
+    }
+  }
+
   open() {
     this._popup.classList.add("popup_open");
-    document.addEventListener("keydown", (evt) => this._handleEscClose(evt)
-    );
+    document.addEventListener("keydown", (evt) => this._handleEscClose(evt));
   }
 
   close() {
