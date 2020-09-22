@@ -1,6 +1,5 @@
 .profile__avatar {
     background-size: cover;
-    display: flex;
     position: relative;
     border-radius: 50%;
     width: 120px;
@@ -10,13 +9,12 @@
     box-sizing: border-box;
 }
 
-.profile__avatar:hover {
+/* .profile__avatar:hover {
     z-index: -2;
     opacity: .5;
-}
+} */
 
-.profile__avatar::before {
-    background-image: url(../../../images/pencil.svg);
+/* .profile__avatar::before {
     z-index: -1;
     content: '';
     display: block;
@@ -26,6 +24,13 @@
     width: 26px;
     height: 26px;
 
+} */
+
+.profile__avatar::after {
+    
+    background-image: url(../../../images/pencil.svg);
+    opacity: 1;
+    z-index: 15;
 }
 
 @media screen and (max-width: 590px) {

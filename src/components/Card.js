@@ -1,25 +1,26 @@
-import { myID } from "../utils/parameters";
+import { userID } from "../utils/parameters";
 
 export default class Card {
   constructor(
     item,
+    userId,
     templateId,
     handleCardClick,
     handleCardDelete,
     handleLikeClick,
-    delLike
+    _handleDeleteLikeClick
   ) {
     // console.log(item)
     this._link = item.link;
     this._name = item.name;
-    // this._userId = cardId;
-    this._like = item.likes;
+    this._userId = userId;
+    this._likes = item.likes;
     this._template = templateId;
     this._handleCardClick = handleCardClick;
     this._deleteCard = handleCardDelete;
     // this._ownerId = item.owner._id;
     this._handleLikeCards = handleLikeClick;
-    this._delLike = delLike;
+    this._handleDeleteLikeClick = _handleDeleteLikeClick;
     // this._likeButton = this._element.querySelector(".foto-grid__like-button");
     // this._likeCounter = this._element.querySelector(".foto-grid__like-counter");
   }
@@ -38,39 +39,48 @@ export default class Card {
 
   _createLikes() {
     const likeCounter = this._element.querySelector(".foto-grid__like-counter");
-    likeCounter.textContent = this._like.length;
+    likeCounter.textContent = this._likes.length;
+    // const likeButton = this._element.querySelector(".foto-grid__like-button");
+    // likeButton.classList.add("foto-grid__like-button_true");
+    this._toogleLikes()
   }
 
-  handleLikeCard() {
-    const likeButton = this._element.querySelector(".foto-grid__like-button");
-    const likeCounter = this._element.querySelector(".foto-grid__like-counter");
-    likeCounter.textContent = this._like.length;
-    likeButton.classList.add("foto-grid__like-button_true");
-  }
+  // handleLikeCard() {
+  //   const likeButton = this._element.querySelector(".foto-grid__like-button");
+  //   const likeCounter = this._element.querySelector(".foto-grid__like-counter");
+  //   likeCounter.textContent = this._likes.length;
+  //   likeButton.classList.add("foto-grid__like-button_true");
+  // }
 
-  handleDelLikeCard() {
-    const likeButton = this._element.querySelector(".foto-grid__like-button");
-    likeButton.classList.remove("foto-grid__like-button_true");
-    const likeCounter = this._element.querySelector(".foto-grid__like-counter");
-    likeCounter.textContent = this._like.length;
-  }
+  // handleDeleteLikeCard() {
+  //   const likeButton = this._element.querySelector(".foto-grid__like-button");
+  //   likeButton.classList.remove("foto-grid__like-button_true");
+  //   const likeCounter = this._element.querySelector(".foto-grid__like-counter");
+  //   likeCounter.textContent = this._likes.length;
+  // }
 
   _isLiked() {
-    return this._like.some((person) => {
-      return person.id === myID;
+    return this._likes.some((person) => {
+      return person._id === userID;
     });
   }
 
+  updateLikes(arrayLikes) {
+    this._likes = arrayLikes;
+
+    this._createLikes();
+  }
+
   _toogleLikes() {
-    const likeCounter = this._element.querySelector(".foto-grid__like-counter");
-    if (this._like) {
-      likeCounter.textContent = this._like.length;
-    } else {
-      likeCounter.textContent = [].length;
-    }
+    // const likeCounter = this._element.querySelector(".foto-grid__like-counter");
+    // if (this._likes) {
+    //   likeCounter.textContent = this._likes.length;
+    // } else {
+    //   likeCounter.textContent = [].length;
+    // }
 
     const likeButton = this._element.querySelector(".foto-grid__like-button");
-    this._isLiked();
+    // this._isLiked(arrayLikes);
 
     if (this._isLiked()) {
       likeButton.classList.add("foto-grid__like-button_true");
@@ -93,8 +103,16 @@ export default class Card {
     this._element
       .querySelector(".foto-grid__like-button")
       .addEventListener("click", () => {
-        this._toogleLikes()
+        if(this._isLiked) {
         this._handleLikeCards();
+      } else {
+        this._handleDeleteLikeClick();
+      }
+        // if (this._isLiked()) {
+        //   likeButton.classList.add("foto-grid__like-button_true");
+        // } else {
+        //   likeButton.classList.remove("foto-grid__like-button_true");
+        // };
       });
   }
 

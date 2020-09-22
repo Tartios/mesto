@@ -33,7 +33,6 @@ const api = new Api({
 Promise.all([api.getInitialCards(), api.getUserInfo()])
 .then((res) => {
   const [cardInfo, userData] = res;
-  console.log(cardInfo, userData);
   const cardGenerator = api.getInitialCards()
 // ----------------- ЗАПРОСЫ К API -----------------//
 
@@ -58,11 +57,12 @@ const cardList = new Section( //разобраться на досуге поч�
   gridCards
 );
 
-cardGenerator.then((res) => {
+cardGenerator
+.then((res) => {
   const cards = new Section(
     {
       items: res.reverse(),
-      renderer: (items) => addCard(items),
+      renderer: (items) => addCard(items, userData._id),
     },
     gridCards
   );
@@ -73,9 +73,11 @@ cardGenerator.then((res) => {
   console.log(err);
 });
 
-function addCard(item) {
+function addCard(item, id) {
   const element = new Card(
     item,
+
+    id,
 
     "#card",
 
@@ -104,8 +106,11 @@ function addCard(item) {
 
     () => {
       api.likeCard(item._id)
-      .then(() => {
-        element.handleLikeCard();
+      .then((res) => {
+        console.log(res)
+        console.log(item.likes)
+        element.updateLikes(item.likes)
+        // element.handleLikeCard();
       })
       .catch((err) => {
         console.log(err);
@@ -115,7 +120,7 @@ function addCard(item) {
     () => {
       api.deleteLikeCard(item._id)
       .then(() => {
-        element.handleDelLikeCard();
+        element.updateLikes(item.likes)
       })
       .catch((err) => {
         console.log(err);
@@ -178,7 +183,7 @@ const addModal = new PopupWithForm({
   submitHandle: (item) => {
     api
       .postNewCard(item)
-      .then((item) => {addCard(item)})
+      .then((item) => {addCard(item, userData._id)})
       .catch((err) => {
         console.log(err);
       })}

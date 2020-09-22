@@ -111,8 +111,12 @@ export class Api {
       },
 
       method: "PUT",
-
-      body: JSON.stringify(),
+    })
+    .then((res) => {
+      return res.json();
+    })
+    .catch((err) => {
+      console.log(err);
     });
   }
 
@@ -123,9 +127,13 @@ export class Api {
         "Content-Type": "application/json",
       },
 
-      method: "DELETE",
-
-      body: JSON.stringify(),
+      method: "DELETE"
+    })
+    .then((res) => {
+      return res.json();
+    })
+    .catch((err) => {
+      console.log(err);
     });
   }
 
