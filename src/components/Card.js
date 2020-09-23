@@ -1,5 +1,3 @@
-import { userID } from "../utils/parameters";
-
 export default class Card {
   constructor(
     item,
@@ -42,7 +40,7 @@ export default class Card {
 
   _isLiked() {
     return this._likes.some((person) => {
-      return person._id === userID;
+      return person._id === this._userId;
     });
   }
 

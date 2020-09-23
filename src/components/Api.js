@@ -1,5 +1,3 @@
-import { data } from "autoprefixer";
-import { myID } from "../utils/parameters.js";
 export class Api {
   constructor(options) {
     this._url = options.url;
@@ -10,6 +8,13 @@ export class Api {
     return Promise.all([this.getInitialCards(), this.getUserInfo()]);
   }
 
+  _getResponceData(res) {
+    if (res.ok) {
+      return res.json();
+    }
+    return Promise.reject(new Error(`Error ${res.status}`));
+  }
+
   getInitialCards() {
     return fetch(`${this._url}/cards`, {
       headers: {
@@ -17,13 +22,7 @@ export class Api {
       },
 
       method: "GET",
-    })
-      .then((res) => {
-        return res.json();
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    }).then(this._getResponceData);
   }
 
   getUserInfo() {
@@ -33,20 +32,14 @@ export class Api {
       },
 
       method: "GET",
-    })
-      .then((res) => {
-        return res.json();
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    }).then(this._getResponceData);
   }
 
   patchUserInfo(data) {
     return fetch(`${this._url}/users/me`, {
       headers: {
         authorization: this._id,
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
 
       method: "PATCH",
@@ -55,13 +48,7 @@ export class Api {
         name: data.name,
         about: data.info,
       }),
-    })
-      .then((res) => {
-        return res.json();
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    }).then(this._getResponceData);
   }
 
   postNewCard(data) {
@@ -77,13 +64,7 @@ export class Api {
         name: data.name,
         link: data.link,
       }),
-    })
-      .then((res) => {
-        return res.json();
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    }).then(this._getResponceData);
   }
 
   deleteCard(cardId) {
@@ -98,7 +79,7 @@ export class Api {
       body: JSON.stringify({
         id: cardId,
       }),
-    });
+    }).then(this._getResponceData);
   }
 
   likeCard(cardId) {
@@ -109,13 +90,7 @@ export class Api {
       },
 
       method: "PUT",
-    })
-      .then((res) => {
-        return res.json();
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    }).then(this._getResponceData);
   }
 
   deleteLikeCard(cardId) {
@@ -126,20 +101,14 @@ export class Api {
       },
 
       method: "DELETE",
-    })
-      .then((res) => {
-        return res.json();
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    }).then(this._getResponceData);
   }
 
   setNewAvatar(data) {
     return fetch(`${this._url}/users/me/avatar`, {
       headers: {
         authorization: this._id,
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
 
       method: "PATCH",
@@ -147,6 +116,6 @@ export class Api {
       body: JSON.stringify({
         avatar: data.link,
       }),
-    });
+    }).then(this._getResponceData);
   }
 }

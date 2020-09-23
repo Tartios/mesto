@@ -22,6 +22,8 @@ export const popupImage = document.querySelector(".popup_type_image");
 export const imgSrc = popupImage.querySelector(".popup__imgSrc");
 export const imagePopupTitle = popupImage.querySelector(".popup__title");
 export const profileAvatar = document.querySelector(".profile__avatar");
+export const popupAvatar = document.querySelector(".popup_type_avatar")
+export const avatarForm = popupAvatar.querySelector(".popup__form");
 export const profileForm = popupProfile.querySelector(".popup__form");
 export const addForm = popupAdd.querySelector(".popup__form");
 

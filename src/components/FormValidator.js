@@ -1,7 +1,5 @@
-import { popupError } from "../utils/parameters.js";
-
 export class FormValidator {
-  constructor(form, parameters) {
+  constructor(form, parameters, popupError) {
     this._formElement = form;
     this._formSelector = parameters.formSelector;
     this._inputSelector = parameters.inputSelector;
@@ -9,6 +7,7 @@ export class FormValidator {
     this._inactiveButtonClass = parameters.inactiveButtonClass;
     this._inputErrorClass = parameters.inputErrorClass;
     this._errorClass = parameters.errorClass;
+    this._popupError = popupError;
   }
 
   _showInputError(inputElement) {
@@ -77,7 +76,7 @@ export class FormValidator {
   }
 
   removeValidate() {
-    popupError.forEach((item) => {
+    this._popupError.forEach((item) => {
       item.textContent = "";
     });
   }

@@ -1,10 +1,12 @@
 export class Popup {
   constructor(popupSelector) {
     this._popup = document.querySelector(popupSelector);
+    this._handleEscClose = this._handleEscClose.bind(this);
   }
 
   _handleEscClose(evt) {
     if (evt.key === "Escape" && this._popup.classList.contains("popup_open")) {
+      console.log('hi')
       this.close();
     }
   }
@@ -29,17 +31,18 @@ export class Popup {
   }
 
   renderLoading(isLoading, text) {
+    const saveButton = this._popup.querySelector(".popup__save-button");
     if (isLoading) {
-      this._popup.querySelector(".popup__save-button").textContent =
+      saveButton.textContent =
         "Сохранение...";
     } else {
-      this._popup.querySelector(".popup__save-button").textContent = text;
+      saveButton.textContent = text;
     }
   }
 
   open() {
     this._popup.classList.add("popup_open");
-    document.addEventListener("keydown", (evt) => this._handleEscClose(evt));
+    document.addEventListener("keydown", this._handleEscClose);
   }
 
   close() {

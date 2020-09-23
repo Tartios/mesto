@@ -6,6 +6,7 @@
 @import url(./__image/foto-grid__image.css);
 @import url(./__img-button/foto-grid__img-button.css);
 @import url(./__like-button/_true/foto-grid__like-button_true.css);
+@import url(./__like-counter/foto-grid__like-counter.css);
 
 .foto-grid {
     display: grid;

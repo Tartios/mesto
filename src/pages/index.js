@@ -17,6 +17,8 @@ import {
   profileProf,
   myID,
   profileAvatar,
+  avatarForm,
+  popupError,
 } from "../utils/parameters.js";
 import { Section } from "../components/Section.js";
 import { PopupWithForm } from "../components/PopupWithForm.js";
@@ -24,13 +26,13 @@ import { PopupWithImage } from "../components/PopupWithImage.js";
 import { UserInfo } from "../components/UserInfo.js";
 import { Api } from "../components/Api.js";
 import { PopupWithDelete } from "../components/PopupWithDelete";
-import { data } from "autoprefixer";
 
 const api = new Api({
   url: "https://mesto.nomoreparties.co/v1/cohort-15",
   id: myID,
 });
-Promise.all([api.getInitialCards(), api.getUserInfo()])
+api
+  .getAppInfo()
   .then((res) => {
     const [cardInfo, userData] = res;
     const cardGenerator = api.getInitialCards();
@@ -39,10 +41,7 @@ Promise.all([api.getInitialCards(), api.getUserInfo()])
     api
       .getUserInfo()
       .then((res) => {
-        profileAvatar.style.background = `url(${res.avatar})`;
-        profileAvatar.style.backgroundSize = "cover";
-        profileName.textContent = res.name;
-        profileProf.textContent = res.about;
+        profilePopup.setUserInfo(res);
       })
       .catch((err) => {
         console.log(err);
@@ -62,7 +61,7 @@ Promise.all([api.getInitialCards(), api.getUserInfo()])
       .then((res) => {
         const cards = new Section(
           {
-            items: res.reverse(),
+            items: res.reverse(), //сделан реверс начальных карточек
             renderer: (items) => addCard(items, userData._id),
           },
           gridCards
@@ -130,6 +129,7 @@ Promise.all([api.getInitialCards(), api.getUserInfo()])
     const profilePopup = new UserInfo({
       nameSelector: ".profile__name",
       infoSelector: ".profile__prof",
+      avatarSelector: ".profile__avatar",
     });
 
     // ----------------- СОЗДАНИЕ ФОРМ -----------------//
@@ -147,6 +147,7 @@ Promise.all([api.getInitialCards(), api.getUserInfo()])
             profilePopup.setUserInfo(item);
             profileName.textContent = item.name;
             profileProf.textContent = item.about;
+            profileModal.close();
           })
           .catch((err) => {
             console.log(err);
@@ -170,6 +171,7 @@ Promise.all([api.getInitialCards(), api.getUserInfo()])
           .then(() => {
             profileAvatar.style.background = `url(${item.link})`;
             profileAvatar.style.backgroundSize = "cover";
+            avatarModal.close();
           })
           .catch((err) => {
             console.log(err);
@@ -188,6 +190,7 @@ Promise.all([api.getInitialCards(), api.getUserInfo()])
           .postNewCard(item)
           .then((item) => {
             addCard(item, userData._id);
+            addModal.close();
           })
           .catch((err) => {
             console.log(err);
@@ -213,6 +216,8 @@ Promise.all([api.getInitialCards(), api.getUserInfo()])
     //аватарка
     profileAvatar.addEventListener("click", function () {
       avatarModal.open();
+      avatarFormValidator.blockButton(addSave, parameters.inactiveButtonClass);
+      avatarFormValidator.removeValidate();
     });
 
     //добавить карточку
@@ -235,9 +240,17 @@ Promise.all([api.getInitialCards(), api.getUserInfo()])
 
     // ----------------- ВАЛИДАЦИЯ -----------------//
 
-    const avatarFormValidator = new FormValidator(avatarModal, parameters);
-    const profileFormValidator = new FormValidator(profileForm, parameters);
-    const addFormValidator = new FormValidator(addForm, parameters);
+    const avatarFormValidator = new FormValidator(
+      avatarForm,
+      parameters,
+      popupError
+    );
+    const profileFormValidator = new FormValidator(
+      profileForm,
+      parameters,
+      popupError
+    );
+    const addFormValidator = new FormValidator(addForm, parameters, popupError);
     profileFormValidator.enableValidation();
     addFormValidator.enableValidation();
     avatarFormValidator.enableValidation();
