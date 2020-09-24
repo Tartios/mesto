@@ -92,6 +92,9 @@ api
               .then(() => {
                 element._handleDeleteCard();
               })
+              .then(() => {
+                deleteForm.close()
+              })
               .catch((err) => {
                 console.log(err);
               });
@@ -147,6 +150,8 @@ api
             profilePopup.setUserInfo(item);
             profileName.textContent = item.name;
             profileProf.textContent = item.about;
+          })
+          .then(() => {         
             profileModal.close();
           })
           .catch((err) => {
@@ -168,9 +173,10 @@ api
         avatarModal.renderLoading(true);
         api
           .setNewAvatar(item)
-          .then(() => {
-            profileAvatar.style.background = `url(${item.link})`;
-            profileAvatar.style.backgroundSize = "cover";
+          .then((item) => {
+            profilePopup.setUserInfo(item);
+          })
+          .then(() => {            
             avatarModal.close();
           })
           .catch((err) => {
@@ -190,6 +196,9 @@ api
           .postNewCard(item)
           .then((item) => {
             addCard(item, userData._id);
+            addModal.close();
+          })
+          .then(() => {            
             addModal.close();
           })
           .catch((err) => {
@@ -233,7 +242,7 @@ api
     openButton.addEventListener("click", function () {
       const userInfo = profilePopup.getUserInfo();
       inputName.value = userInfo.name;
-      inputProf.value = userInfo.info;
+      inputProf.value = userInfo.about;
       profileFormValidator.removeValidate();
       profileModal.open();
     });

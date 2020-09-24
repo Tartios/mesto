@@ -16,7 +16,6 @@ export class PopupWithDelete extends Popup {
       .addEventListener("click", (evt) => {
         evt.preventDefault();
         this._handle();
-        this.close();
       });
   }
 }
